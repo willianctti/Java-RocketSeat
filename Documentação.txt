@@ -1,0 +1,53 @@
+utilizando o spring initializr definimos nosso projeto com a dependência spring 
+web.
+
+		O que é uma controller?
+
+é um componente que temos. Serve para ser a camada entre a requisição e as demais
+camadas. Basicamente, recebe a requisição do usuário.
+
+Utilizamos um RestController para "Criar rotas":
+
+
+@RestController
+@RequestMapping("/primeirarota")
+public class MinhaPrimeiraController {
+
+
+    @GetMapping("/")
+    public String primeiraMensagem() {
+        return "Funcionou";
+    }
+
+}
+
+
+
+para testes, criei uma classe que cria um modelo de user:
+
+package br.com.willianctti.todolist.user;
+
+public class UserModel {
+    String username;    
+    String name;    
+    String password;    
+
+}
+
+
+
+criei tambéwm uma classe que faz a rota e utiliza o modelo de user:
+
+@RestController
+@RequestMapping("/users")
+public class UserController {
+    
+
+    @PostMapping("/")
+    public void create(@RequestBody UserModel usermodel) {
+        System.out.println(usermodel.name);
+    }
+}
+
+
+com um teste em post com a apidog podemos validar esse teste.
