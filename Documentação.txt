@@ -51,3 +51,109 @@ public class UserController {
 
 
 com um teste em post com a apidog podemos validar esse teste.
+
+
+
+
+
+					Lombok
+
+lib que ajuda a colocar geterrs, setters e etc.:
+
+
+	<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.30</version>
+			<scope>provided</scope>
+		</dependency>
+
+
+
+					h2
+
+
+estrutura básica de um banco h2:
+
+userModel:
+
+  package br.com.willianctti.todolist.user;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import lombok.Data;
+
+@Data
+@Entity(name = "tb_users")
+public class UserModel {
+    @Id
+    private Long id;
+
+
+    private String username;    
+    private String name;    
+    private String password;   
+    
+  
+
+
+}
+
+
+
+a´pllication.properties: 
+
+spring.datasource.url=jdbc:h2:mem:todolist
+spring.datasource.driver-class-name=org.h2.Driver
+spring.datasource.username=admin
+spring.datasource.password=admin
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.h2.console.enabled=true
+spring.datasource.driverClassName=org.h2.Driver
+
+
+
+
+
+
+
+
+
+									Interface
+
+
+uma interface é um modelo ou contrato que temos dentro da nossa aplicação. Temos os métodos mas
+a implementação não. 
+
+package br.com.willianctti.todolist.user;
+import org.springframework.data.jpa.repository.JpaRepository;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
+public interface IUserRepository extends JpaRepository<UserModel, Id>{ 
+    
+}
+
+
+
+
+@RestController
+@RequestMapping("/users")
+public class UserController {
+    
+    @Autowired
+    private IUserRepository userRepository;
+    @PostMapping("/")
+    public UserModel create(@RequestBody UserModel usermodel) {
+        var userCreated = this.userRepository.save(usermodel);
+        return userCreated;
+    }
+
+
+
+
+validações:
+
+   @Column(unique = true)
+    private String username;    
+    private String name;    
+    private String password;   
